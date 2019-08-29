@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Train Route</title>
+    <!--PROJECT CSS-->
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+
+    <!--BOOTSTRAP CDN'S-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<script type="text/javascript">
+
+   /* function validate(){
+        var btn=$('#btn').val();
+        if (btn==""){
+            $('#btn').css("border","2px red solid");
+
+        }
+    }*/
+
+    $(document).ready(function () {
+        $('#btn').click(function () {
+            var train=$('#train').val();
+            //alert(train);
+            $.get("https://api.railwayapi.com/v2/route/train/" + train +"/apikey/jazgnzts52/", function (data) {
+//console.log(data);
+
+                $('#result').append('<table class="table"><tr><th>Station Name</th><th>Code</th><th>Arrival</th><th>Departure</th><th>Stoppage</th><th>Kms</th></tr></table>');
+
+                for(var i=0;i<data['route'].length;i++){
+                    $('#result').append('<table class="table table-striped table-bordered"><tr><td>' + data['route'][i]['station']['name'] + '</td><td>' + data['route'][i]['station']['code'] +'</td><td>' + data['route'][i]['scharr'] +'</td><td>' + data['route'][i]['schdep'] + '</td><td>'+ data['route'][i]['halt'] +' mins</td><td>' + data['route'][i]['distance'] +' kms</td></tr></table>');
+                }
+            });
+        });
+
+
+        });
+
+
+</script>
+
+<body style="background-color: lightskyblue">
+<nav class="navbar navbar-dark bg-blue navbar-expand">
+    <img src="travel.png" width="10%">
+    <a class="navbar-brand" href="#">GO GO TRIPS</a>
+
+
+</nav>
+
+<div class="jumbotron">
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-6 offset-3">
+            <h1 class="text-center">Find Train Route in one click</h1>
+            <input  id="train" type="number" class="form-control"><br>
+            <button id=btn class="btn btn-primary btn-lg offset-4">Find Route</button>
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div id="result" class="col-12">
+
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
